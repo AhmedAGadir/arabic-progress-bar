@@ -1,8 +1,10 @@
+// modularise the code
 // pulse animation
-// reset each progress first
-// colour books gold when finished
-// share progress on social media
-// add a login system
+// save page state and selected book state and reload 
+// reset each progress first === noppee
+// colour books gold when finished === noppee
+// share progress on social media - maybe
+// add a login system LOL 
 // if youve already filled out the form then just reload the page youre on 
 
 
@@ -119,27 +121,27 @@ function CircularProgressWithLabel(props) {
   );
 }
 
-function CompletionForm({ label, options, value, onChange }) {
-  const classes = useStyles();
+// function CompletionForm({ label, options, value, onChange }) {
+//   const classes = useStyles();
 
-  return (
-    <FormControl variant="outlined" className={classes.formControl}>
-      <InputLabel>{label}</InputLabel>
-      <Select
-        native
-        value={value}
-        onChange={onChange}
-        label={label}
-      >
-        {
-          options.map(option => (
-            <option value={option} key={option}>{option}</option>
-          ))
-        }
-      </Select>
-    </FormControl >
-  );
-}
+//   return (
+//     <FormControl variant="outlined" className={classes.formControl}>
+//       <InputLabel>{label}</InputLabel>
+//       <Select
+//         native
+//         value={value}
+//         onChange={onChange}
+//         label={label}
+//       >
+//         {
+//           options.map(option => (
+//             <option value={option} key={option}>{option}</option>
+//           ))
+//         }
+//       </Select>
+//     </FormControl >
+//   );
+// }
 
 function App() {
 
@@ -162,7 +164,7 @@ function App() {
   // const [parts, setParts] = useState([]);
   // const [partsVal, setPartsVal] = useState('');
 
-  const [restoringProgress, setRestoringProgress] = useState(false);
+  // const [restoringProgress, setRestoringProgress] = useState(false);
 
   // const [videoCount, setVideoCount] = useState(0);
   // const [currentVideoNo, setCurrentVideoNo] = useState(0)
@@ -179,7 +181,7 @@ function App() {
 
     let savedProgress = JSON.parse(localStorage.getItem(`MB${selectedBook}-progress`));
     if (savedProgress) {
-      setRestoringProgress(true);
+      // setRestoringProgress(true);
       const savedChapter = parseInt(savedProgress);
       setCompletedChapters(savedChapter);
     } else {
@@ -245,7 +247,7 @@ function App() {
                 <Typography variant="body1" component="p">
                   Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolor, tempora blanditiis voluptates nam doloribus at illum adipisci culpa, dignissimos nobis magnam, quasi dolores error cupiditate! Mollitia dolores illo velit molestiae.
               </Typography>
-                <Button
+                {/* <Button
                   variant='outlined'
                   className={classes.button}
                   onClick={() => {
@@ -253,7 +255,7 @@ function App() {
                     // setCarouselIndex(carouselIndex + 1)
                     // document.activeElement.blur()
                   }}
-                >Get Started</Button>
+                >Get Started</Button> */}
               </Container>
             </div>
           </div>
