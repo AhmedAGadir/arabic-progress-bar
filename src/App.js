@@ -185,7 +185,7 @@ function App() {
       const savedChapter = parseInt(savedProgress);
       setCompletedChapters(savedChapter);
     } else {
-      // setCompletedChapters(0);
+      setCompletedChapters(0);
     }
   }, [selectedBook]);
 
