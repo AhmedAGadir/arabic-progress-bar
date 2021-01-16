@@ -17,11 +17,15 @@ img[alt="link to my github"] {
   width: 40px;
   margin: 20px;
   opacity: 0.5;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 img[alt="link to my github"]:hover {
   opacity: 1;
+}
+
+.App-header {
+  margin-top: 20px;
 }
 
 /* .App {

@@ -1,18 +1,21 @@
-import logo from './logo.svg';
+// reset each progress first
+// colour books gold when finished
+
+
 import './App.css';
 
 import React, { useState, useEffect } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import LinearProgress from '@material-ui/core/LinearProgress';
+// import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import { makeStyles } from '@material-ui/core/styles';
-import FormHelperText from '@material-ui/core/FormHelperText';
+// import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
+// import NativeSelect from '@material-ui/core/NativeSelect';
 
 import amber from '@material-ui/core/colors/amber';
 import lightBlue from '@material-ui/core/colors/lightBlue';
@@ -30,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    // minWidth: 120,
+    width: 150,
     fontWeight: 'bold',
     display: 'inline'
   }
@@ -128,9 +132,11 @@ function CompletionForm({ label, options, value, onChange }) {
 
 function App() {
 
-  const [selectedBook, setSelectedBook] = useState(3);
-  const AllBooks = [1, 2, 3];
+  const allBooks = [1, 2, 3];
+  const [selectedBook, setSelectedBook] = useState(allBooks[2]);
 
+  const allResources = ['LQToronto Videos', 'YouTube Playlist', 'Book Chapters']
+  const [selectedResource, setSelectedResource] = useState(allResources[0]);
 
   const [progress, setProgress] = useState(0);
 
@@ -144,7 +150,6 @@ function App() {
   useEffect(() => {
     let dvds = booksMap[selectedBook].map(dvd => dvd.dvd);
     setDvds(dvds);
-
     let savedProgress = JSON.parse(localStorage.getItem(`MB${selectedBook}-progress`));
     if (savedProgress) {
       setRestoringProgress(true);
@@ -157,6 +162,9 @@ function App() {
 
   useEffect(() => {
     if (dvdVal) {
+      if (!booksMap[selectedBook].find(dvd => dvd.dvd === dvdVal)) {
+        debugger;
+      }
       let parts = booksMap[selectedBook].find(dvd => dvd.dvd === dvdVal).parts;
       setParts(parts);
     }
@@ -195,10 +203,10 @@ function App() {
       }
       totalVideosCount += dvd.parts.length;
     });
-    let progress = Math.floor(100 * watchedVideosCount / totalVideosCount)
+    let progress = Math.floor(100 * watchedVideosCount / totalVideosCount);
     setProgress(progress);
     console.log('saving progress', [dvdVal, partsVal])
-    localStorage.setItem('MB3-progress', JSON.stringify([dvdVal, partsVal]))
+    localStorage.setItem(`MB${selectedBook}-progress`, JSON.stringify([dvdVal, partsVal]))
   }
 
   const book1Data = require('./madinah_book_1.json');
@@ -240,8 +248,21 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="App">
+        <div></div>
         <div style={{}}>
-          {AllBooks.map(bookNo => (
+          {allResources.map(resource => (
+            <Button
+              key={resource}
+              variant={selectedResource === resource ? 'contained' : 'outlined'}
+              className={classes.button}
+              onClick={() => {
+                setSelectedResource(resource);
+              }}
+            >{resource}</Button>))
+          }
+        </div>
+        <div style={{}}>
+          {allBooks.map(bookNo => (
             <Button
               key={bookNo}
               variant={selectedBook === bookNo ? 'contained' : 'outlined'}
@@ -278,6 +299,7 @@ function App() {
           </div>
         </main>
         <footer>
+          {/* <Button variant="contained" color="primary">Learn More</Button> */}
           <a
             href="https://github.com/AhmedAGadir"
             target="_blank">
