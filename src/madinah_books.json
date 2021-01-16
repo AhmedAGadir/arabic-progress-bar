@@ -1,0 +1,14 @@
+[
+    {
+        "book": 1,
+        "chapters": 23
+    },
+    {
+        "book": 2,
+        "chapters": 31
+    },
+    {
+        "book": 3,
+        "chapters": 34
+    }
+]

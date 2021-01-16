@@ -1,5 +1,9 @@
+// pulse animation
 // reset each progress first
 // colour books gold when finished
+// share progress on social media
+// add a login system
+// if youve already filled out the form then just reload the page youre on 
 
 
 import './App.css';
@@ -32,7 +36,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: 180,
     // color: 'white'
   },
   button: {
@@ -41,7 +45,10 @@ const useStyles = makeStyles((theme) => ({
     width: 150,
     fontWeight: 'bold',
     display: 'inline'
-  }
+  },
+  h3: {
+    fontWeight: 300
+  },
   // selectEmpty: {
   //   marginTop: theme.spacing(2),
   // },
@@ -136,100 +143,72 @@ function CompletionForm({ label, options, value, onChange }) {
 
 function App() {
 
-  const allBooks = [1, 2, 3];
-  const [selectedBook, setSelectedBook] = useState(allBooks[2]);
+  const [carouselIndex, setCarouselIndex] = useState(0);
 
-  const allResources = ['LQToronto Videos', 'YouTube Playlist', 'Book Chapters']
-  const [selectedResource, setSelectedResource] = useState(allResources[0]);
+  const handleSelect = (selectedIndex, e) => {
+    setCarouselIndex(selectedIndex);
+  };
+
+  const allBooks = [1, 2, 3];
+  const [selectedBook, setSelectedBook] = useState(allBooks[0]);
+
+  // const allResources = ['LQToronto Website', 'YouTube Playlist', 'Book Chapters']
+  // const [selectedResource, setSelectedResource] = useState(allResources[0]);
 
   const [progress, setProgress] = useState(0);
 
-  const [dvds, setDvds] = useState([]);
-  const [dvdVal, setDvdVal] = useState(0);
-  const [parts, setParts] = useState([]);
-  const [partsVal, setPartsVal] = useState('');
+  // const [dvds, setDvds] = useState([]);
+  // const [dvdVal, setDvdVal] = useState(0);
+  // const [parts, setParts] = useState([]);
+  // const [partsVal, setPartsVal] = useState('');
 
   const [restoringProgress, setRestoringProgress] = useState(false);
 
+  // const [videoCount, setVideoCount] = useState(0);
+  // const [currentVideoNo, setCurrentVideoNo] = useState(0)
+
+  const [totalChapters, setTotalChapters] = useState(0);
+  const [completedChapters, setCompletedChapters] = useState(null);
+
+  const madinahBooks = require('./madinah_books.json');
+
   useEffect(() => {
-    let dvds = booksMap[selectedBook].map(dvd => dvd.dvd);
-    setDvds(dvds);
+    let totalChapters = madinahBooks.find(book => book.book === selectedBook).chapters;
+    console.log('setting total chapters for book', totalChapters, 'selected book', selectedBook)
+    setTotalChapters(totalChapters);
+
     let savedProgress = JSON.parse(localStorage.getItem(`MB${selectedBook}-progress`));
     if (savedProgress) {
       setRestoringProgress(true);
-      const savedDvd = savedProgress[0];
-      setDvdVal(savedDvd);
+      const savedChapter = parseInt(savedProgress);
+      setCompletedChapters(savedChapter);
     } else {
-      setDvdVal(1);
+      // setCompletedChapters(0);
     }
   }, [selectedBook]);
 
   useEffect(() => {
-    if (dvdVal) {
-      if (!booksMap[selectedBook].find(dvd => dvd.dvd === dvdVal)) {
-        debugger;
-      }
-      let parts = booksMap[selectedBook].find(dvd => dvd.dvd === dvdVal).parts;
-      setParts(parts);
-    }
-  }, [dvdVal]);
-
-  useEffect(() => {
-    if (parts.length === 0) {
-      return;
-    }
-    if (restoringProgress) {
-      let savedPart = JSON.parse(localStorage.getItem(`MB${selectedBook}-progress`))[1];
-      setPartsVal(savedPart);
-      setRestoringProgress(false);
-    } else {
-      setPartsVal(parts[0]);
-    }
-    updateProgress();
-  }, [parts]);
-
-  useEffect(() => {
-    if (!partsVal) {
+    if (completedChapters === null) {
       return;
     }
     updateProgress();
-  }, [partsVal]);
+  }, [completedChapters])
 
   const updateProgress = () => {
-    let watchedVideosCount = 0;
-    let totalVideosCount = 0;
-    booksMap[selectedBook].forEach(dvd => {
-      if (dvdVal > dvd.dvd) {
-        watchedVideosCount += dvd.parts.length;
-      } else if (dvdVal === dvd.dvd) {
-        let watchedParts = 1 + dvd.parts.findIndex(part => partsVal === part);
-        watchedVideosCount += watchedParts;
-      }
-      totalVideosCount += dvd.parts.length;
-    });
-    let progress = Math.floor(100 * watchedVideosCount / totalVideosCount);
+    let progress;
+    if (!completedChapters) {
+      progress = 0;
+    } else {
+      progress = Math.floor(100 * completedChapters / totalChapters);
+    }
     setProgress(progress);
-    console.log('saving progress', [dvdVal, partsVal])
-    localStorage.setItem(`MB${selectedBook}-progress`, JSON.stringify([dvdVal, partsVal]))
+    console.log('saving progress', completedChapters)
+    localStorage.setItem(`MB${selectedBook}-progress`, JSON.stringify(completedChapters))
   }
 
-  const book1Data = require('./madinah_book_1.json');
-  const book2Data = require('./madinah_book_2.json');
-  const book3Data = require('./madinah_book_3.json');
-
-  const booksMap = {
-    1: book1Data,
-    2: book2Data,
-    3: book3Data
-  };
-
-  const handleDVDChange = event => {
-    const selectedDVD = parseInt(event.target.value);
-    setDvdVal(selectedDVD);
-  }
-
-  const handlePartsChange = event => {
-    setPartsVal(event.target.value);
+  const handleCompletedChaptersChange = event => {
+    const completedChapters = parseInt(event.target.value);
+    setCompletedChapters(completedChapters);
   }
 
   const darkTheme = createMuiTheme({
@@ -248,29 +227,41 @@ function App() {
   });
 
   const classes = useStyles();
-
   return (
     <ThemeProvider theme={darkTheme}>
-      <Carousel>
+      <Carousel
+        activeIndex={carouselIndex}
+        onSelect={handleSelect}
+        wrap={false}
+        interval={null}>
         <Carousel.Item>
           <div className="App">
             <div>
               السلام عليكم ورحمة الله وبركاته
               <Typography variant="h2" component="h2" gutterBottom>
-                As-salamu Alaykum!
+                Track your progress with the <span style={{ color: lightBlue[500] }}>Madinah Books</span>!
               </Typography>
               <Container maxWidth="sm">
                 <Typography variant="body1" component="p">
                   Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolor, tempora blanditiis voluptates nam doloribus at illum adipisci culpa, dignissimos nobis magnam, quasi dolores error cupiditate! Mollitia dolores illo velit molestiae.
               </Typography>
+                <Button
+                  variant='outlined'
+                  className={classes.button}
+                  onClick={() => {
+                    // setTimeout(() => setCarouselIndex(carouselIndex + 1), 500);
+                    // setCarouselIndex(carouselIndex + 1)
+                    // document.activeElement.blur()
+                  }}
+                >Get Started</Button>
               </Container>
             </div>
           </div>
         </Carousel.Item>
-        <Carousel.Item>
+        {/* <Carousel.Item>
           <div className="App">
             <div style={{}}>
-              <Typography variant="h2" component="h2" gutterBottom>
+              <Typography variant="h3" component="h3" className={classes.h3} gutterBottom>
                 Which book are you on?
               </Typography>
               {allBooks.map(bookNo => (
@@ -280,33 +271,32 @@ function App() {
                   className={classes.button}
                   onClick={() => {
                     setSelectedBook(bookNo);
+                    // setTimeout(() => setCarouselIndex(carouselIndex + 1), 500);
+                    // setCarouselIndex(carouselIndex + 1)
+                    // document.activeElement.blur()
                   }}
                 >Book {bookNo}</Button>))
               }
             </div>
           </div>
-        </Carousel.Item>
+        </Carousel.Item> */}
         <Carousel.Item>
           <div className="App">
             <div style={{}}>
-              <Typography variant="h2" component="h2" gutterBottom>
-                Which resource are you using to learn?
-              </Typography>
-              {allResources.map(resource => (
+              {allBooks.map(bookNo => (
                 <Button
-                  key={resource}
-                  variant={selectedResource === resource ? 'contained' : 'outlined'}
+                  key={bookNo}
+                  variant={selectedBook === bookNo ? 'contained' : 'outlined'}
                   className={classes.button}
                   onClick={() => {
-                    setSelectedResource(resource);
+                    setSelectedBook(bookNo);
+                    // setTimeout(() => setCarouselIndex(carouselIndex + 1), 500);
+                    // setCarouselIndex(carouselIndex + 1)
+                    // document.activeElement.blur()
                   }}
-                >{resource}</Button>))
+                >Book {bookNo}</Button>))
               }
             </div>
-          </div>
-        </Carousel.Item>
-        <Carousel.Item>
-          <div className="App">
             <header className="App-header">
               <div>دروس اللغة العربية</div>
               <Typography variant="h2" component="h2" gutterBottom>
@@ -318,18 +308,24 @@ function App() {
                 <CircularProgressWithLabel value={progress} />
               </div>
               <div>
-                <CompletionForm
-                  label="DVD"
-                  options={dvds}
-                  value={dvdVal}
-                  onChange={handleDVDChange}
-                />
-                <CompletionForm
-                  label="Part"
-                  options={parts}
-                  value={partsVal}
-                  onChange={handlePartsChange}
-                />
+                <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>Completed Chapter</InputLabel>
+                  <Select
+                    native
+                    value={completedChapters}
+                    onChange={handleCompletedChaptersChange}
+                    label={'Completed Chapter'}
+                  >
+                    {
+                      [
+                        <option></option>,
+                        ...Array.from({ length: totalChapters }, (_, i) => i + 1).map(num => (
+                          <option value={num} key={num}>{num}</option>
+                        ))
+                      ]
+                    }
+                  </Select>
+                </FormControl >
               </div>
             </main>
           </div>
