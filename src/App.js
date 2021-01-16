@@ -20,6 +20,7 @@ import purple from '@material-ui/core/colors/purple';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -27,6 +28,12 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
     // color: 'white'
   },
+  button: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    fontWeight: 'bold',
+    display: 'inline'
+  }
   // selectEmpty: {
   //   marginTop: theme.spacing(2),
   // },
@@ -110,11 +117,9 @@ function CompletionForm({ label, options, value, onChange }) {
         label={label}
       >
         {
-          options.map(option => {
-            return (
-              <option value={option} key={option}>{option}</option>
-            )
-          })
+          options.map(option => (
+            <option value={option} key={option}>{option}</option>
+          ))
         }
       </Select>
     </FormControl >
@@ -122,6 +127,11 @@ function CompletionForm({ label, options, value, onChange }) {
 }
 
 function App() {
+
+  const [selectedBook, setSelectedBook] = useState(3);
+  const AllBooks = [1, 2, 3];
+
+
   const [progress, setProgress] = useState(0);
 
   const [dvds, setDvds] = useState([]);
@@ -132,10 +142,10 @@ function App() {
   const [restoringProgress, setRestoringProgress] = useState(false);
 
   useEffect(() => {
-    let dvds = courseData.map(dvd => dvd.dvd);
+    let dvds = booksMap[selectedBook].map(dvd => dvd.dvd);
     setDvds(dvds);
 
-    let savedProgress = JSON.parse(localStorage.getItem('MB3-progress'));
+    let savedProgress = JSON.parse(localStorage.getItem(`MB${selectedBook}-progress`));
     if (savedProgress) {
       setRestoringProgress(true);
       const savedDvd = savedProgress[0];
@@ -143,11 +153,11 @@ function App() {
     } else {
       setDvdVal(1);
     }
-  }, []);
+  }, [selectedBook]);
 
   useEffect(() => {
     if (dvdVal) {
-      let parts = courseData.find(dvd => dvd.dvd === dvdVal).parts;
+      let parts = booksMap[selectedBook].find(dvd => dvd.dvd === dvdVal).parts;
       setParts(parts);
     }
   }, [dvdVal]);
@@ -157,7 +167,7 @@ function App() {
       return;
     }
     if (restoringProgress) {
-      let savedPart = JSON.parse(localStorage.getItem('MB3-progress'))[1];
+      let savedPart = JSON.parse(localStorage.getItem(`MB${selectedBook}-progress`))[1];
       setPartsVal(savedPart);
       setRestoringProgress(false);
     } else {
@@ -176,7 +186,7 @@ function App() {
   const updateProgress = () => {
     let watchedVideosCount = 0;
     let totalVideosCount = 0;
-    courseData.forEach(dvd => {
+    booksMap[selectedBook].forEach(dvd => {
       if (dvdVal > dvd.dvd) {
         watchedVideosCount += dvd.parts.length;
       } else if (dvdVal === dvd.dvd) {
@@ -191,7 +201,15 @@ function App() {
     localStorage.setItem('MB3-progress', JSON.stringify([dvdVal, partsVal]))
   }
 
-  const courseData = require('./madinah_book_3.json');
+  const book1Data = require('./madinah_book_1.json');
+  const book2Data = require('./madinah_book_2.json');
+  const book3Data = require('./madinah_book_3.json');
+
+  const booksMap = {
+    1: book1Data,
+    2: book2Data,
+    3: book3Data
+  };
 
   const handleDVDChange = event => {
     const selectedDVD = parseInt(event.target.value);
@@ -217,13 +235,27 @@ function App() {
     },
   });
 
+  const classes = useStyles();
 
   return (
     <ThemeProvider theme={darkTheme}>
       <div className="App">
+        <div style={{}}>
+          {AllBooks.map(bookNo => (
+            <Button
+              key={bookNo}
+              variant={selectedBook === bookNo ? 'contained' : 'outlined'}
+              className={classes.button}
+              onClick={() => {
+                setSelectedBook(bookNo);
+              }}
+            >Book {bookNo}</Button>))
+          }
+        </div>
         <header className="App-header">
+          دروس اللغة العربية
           <Typography variant="h2" component="h2" gutterBottom>
-            Madinah Book <span style={{ color: progress < 100 ? lightBlue[500] : amber[500] }}>3</span>
+            Madinah Book <span style={{ color: progress < 100 ? lightBlue[500] : amber[500] }}>{selectedBook}</span>
           </Typography>
         </header>
         <main>
@@ -245,6 +277,13 @@ function App() {
             />
           </div>
         </main>
+        <footer>
+          <a
+            href="https://github.com/AhmedAGadir"
+            target="_blank">
+            <img src="https://res.cloudinary.com/ahmedagadir/image/upload/v1530726623/product-landing-page/github-sign.svg" alt="link to my github" title="Check out my github" />
+          </a>
+        </footer>
       </div>
     </ThemeProvider >
   );
