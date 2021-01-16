@@ -16,6 +16,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 // import NativeSelect from '@material-ui/core/NativeSelect';
+import Container from '@material-ui/core/Container';
 
 import amber from '@material-ui/core/colors/amber';
 import lightBlue from '@material-ui/core/colors/lightBlue';
@@ -24,6 +25,9 @@ import purple from '@material-ui/core/colors/purple';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
+
+import Carousel from 'react-bootstrap/Carousel'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -247,66 +251,98 @@ function App() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <div className="App">
-        <div></div>
-        <div style={{}}>
-          {allResources.map(resource => (
-            <Button
-              key={resource}
-              variant={selectedResource === resource ? 'contained' : 'outlined'}
-              className={classes.button}
-              onClick={() => {
-                setSelectedResource(resource);
-              }}
-            >{resource}</Button>))
-          }
-        </div>
-        <div style={{}}>
-          {allBooks.map(bookNo => (
-            <Button
-              key={bookNo}
-              variant={selectedBook === bookNo ? 'contained' : 'outlined'}
-              className={classes.button}
-              onClick={() => {
-                setSelectedBook(bookNo);
-              }}
-            >Book {bookNo}</Button>))
-          }
-        </div>
-        <header className="App-header">
-          دروس اللغة العربية
-          <Typography variant="h2" component="h2" gutterBottom>
-            Madinah Book <span style={{ color: progress < 100 ? lightBlue[500] : amber[500] }}>{selectedBook}</span>
-          </Typography>
-        </header>
-        <main>
-          <div style={{ margin: 30 }}>
-            <CircularProgressWithLabel value={progress} />
+      <Carousel>
+        <Carousel.Item>
+          <div className="App">
+            <div>
+              السلام عليكم ورحمة الله وبركاته
+              <Typography variant="h2" component="h2" gutterBottom>
+                As-salamu Alaykum!
+              </Typography>
+              <Container maxWidth="sm">
+                <Typography variant="body1" component="p">
+                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolor, tempora blanditiis voluptates nam doloribus at illum adipisci culpa, dignissimos nobis magnam, quasi dolores error cupiditate! Mollitia dolores illo velit molestiae.
+              </Typography>
+              </Container>
+            </div>
           </div>
-          <div>
-            <CompletionForm
-              label="DVD"
-              options={dvds}
-              value={dvdVal}
-              onChange={handleDVDChange}
-            />
-            <CompletionForm
-              label="Part"
-              options={parts}
-              value={partsVal}
-              onChange={handlePartsChange}
-            />
+        </Carousel.Item>
+        <Carousel.Item>
+          <div className="App">
+            <div style={{}}>
+              <Typography variant="h2" component="h2" gutterBottom>
+                Which book are you on?
+              </Typography>
+              {allBooks.map(bookNo => (
+                <Button
+                  key={bookNo}
+                  variant={selectedBook === bookNo ? 'contained' : 'outlined'}
+                  className={classes.button}
+                  onClick={() => {
+                    setSelectedBook(bookNo);
+                  }}
+                >Book {bookNo}</Button>))
+              }
+            </div>
           </div>
-        </main>
-        <footer>
-          {/* <Button variant="contained" color="primary">Learn More</Button> */}
-          <a
-            href="https://github.com/AhmedAGadir"
-            target="_blank">
-            <img src="https://res.cloudinary.com/ahmedagadir/image/upload/v1530726623/product-landing-page/github-sign.svg" alt="link to my github" title="Check out my github" />
-          </a>
-        </footer>
-      </div>
+        </Carousel.Item>
+        <Carousel.Item>
+          <div className="App">
+            <div style={{}}>
+              <Typography variant="h2" component="h2" gutterBottom>
+                Which resource are you using to learn?
+              </Typography>
+              {allResources.map(resource => (
+                <Button
+                  key={resource}
+                  variant={selectedResource === resource ? 'contained' : 'outlined'}
+                  className={classes.button}
+                  onClick={() => {
+                    setSelectedResource(resource);
+                  }}
+                >{resource}</Button>))
+              }
+            </div>
+          </div>
+        </Carousel.Item>
+        <Carousel.Item>
+          <div className="App">
+            <header className="App-header">
+              <div>دروس اللغة العربية</div>
+              <Typography variant="h2" component="h2" gutterBottom>
+                Madinah Book <span style={{ color: progress < 100 ? lightBlue[500] : amber[500] }}>{selectedBook}</span>
+              </Typography>
+            </header>
+            <main>
+              <div style={{ margin: 30 }}>
+                <CircularProgressWithLabel value={progress} />
+              </div>
+              <div>
+                <CompletionForm
+                  label="DVD"
+                  options={dvds}
+                  value={dvdVal}
+                  onChange={handleDVDChange}
+                />
+                <CompletionForm
+                  label="Part"
+                  options={parts}
+                  value={partsVal}
+                  onChange={handlePartsChange}
+                />
+              </div>
+            </main>
+          </div>
+        </Carousel.Item>
+      </Carousel>
+      <footer>
+        {/* <Button variant="contained" color="primary">Learn More</Button> */}
+        <a
+          href="https://github.com/AhmedAGadir"
+          target="_blank">
+          <img src="https://res.cloudinary.com/ahmedagadir/image/upload/v1530726623/product-landing-page/github-sign.svg" alt="link to my github" title="Check out my github" />
+        </a>
+      </footer>
     </ThemeProvider >
   );
 }
