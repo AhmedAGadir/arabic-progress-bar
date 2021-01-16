@@ -13,7 +13,8 @@
   }
 }
 
-.App-header {
+.App {
+  text-align: center;
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -24,8 +25,12 @@
   color: white;
 }
 
-.App-link {
+.App-link, .blue-highlight {
   color: #61dafb;
+}
+
+.white-highlight {
+  color: white;
 }
 
 @keyframes App-logo-spin {
@@ -35,4 +40,11 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.my-progress-bar {
+  height: 40vmin;
+  width: 40vmin;
+  pointer-events: none;
+  background: green;
 }
