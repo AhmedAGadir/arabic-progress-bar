@@ -5,11 +5,13 @@
 // reset each progress first === noppee
 // colour books gold when finished === noppee
 // share progress on social media - maybe
-// add a login system LOL 
+// add a login system  
 // if youve already filled out the form then just reload the page youre on 
 // deploy
 // whats next page 
-//
+// notifications on updating chapter 
+// light/dark mode
+// mahas idea
 
 import './App.css';
 
@@ -26,6 +28,8 @@ import Container from '@material-ui/core/Container';
 
 import amber from '@material-ui/core/colors/amber';
 import lightBlue from '@material-ui/core/colors/lightBlue';
+import red from '@material-ui/core/colors/red';
+import purple from '@material-ui/core/colors/purple';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
@@ -33,6 +37,13 @@ import Button from '@material-ui/core/Button';
 
 import Carousel from 'react-bootstrap/Carousel'
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import Brightness1Icon from '@material-ui/icons/Brightness1';
+import Brightness2Icon from '@material-ui/icons/Brightness2';
+
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -55,6 +66,28 @@ const useStyles = makeStyles((theme) => ({
     transform: 'scale(1)',
     // transition: '0.5s ease all',
     animation: props => props.animate ? 'pulse 1s forwards' : null
+  },
+  fixedBottomLeft: {
+    position: 'fixed',
+    bottom: 0,
+    left: '50%',
+    marginBottom: 200,
+    transform: 'translateX(-50%)',
+    width: 40,
+    // margin: 20,
+    transition: 'all 0.2s ease',
+    zIndex: 999,
+    cursor: 'pointer'
+  },
+  fixedBottomRight: {
+    position: 'fixed',
+    bottom: 0,
+    right: 0,
+    width: 40,
+    margin: 20,
+    transition: 'all 0.2s ease',
+    zIndex: 999,
+    cursor: 'pointer'
   }
 }));
 
@@ -98,11 +131,8 @@ function CircularProgressWithLabel(props) {
           color={props.value < 100 ? "primary" : "secondary"}
         >
           {`${Math.round(props.value,)}%`}
-          <span
-            style={{
-              color: 'white'
-            }}
-          > COMPLETED</span></Typography>
+          <Typography variant="inherit" color="textPrimary"> COMPLETED</Typography>
+        </Typography>
       </Box>
     </Box>
   );
@@ -114,21 +144,21 @@ function LandingPage(props) {
     <div className="app-page">
       <Container maxWidth="md">
         <div>السلام عليكم ورحمة الله وبركاته</div>
-        <Typography variant="h2" component="h2">
-          Track your progress with the <span style={{ color: lightBlue[500] }}>Madinah Books</span>!
+        <Typography variant="h2" component="h2" gutterBottom>
+          Track your progress with the <Typography variant="inherit" color="primary">Madinah Books</Typography>!
         </Typography>
         <Container maxWidth="sm">
-          <Typography variant="body1" component="p" className={classes.paragraph}>
+          <Typography variant="body1" component="p" paragraph>
             A simple web app to help students of the arabic language stay motivated🙏🏾 .
                 </Typography>
-          <Typography variant="body1" component="p" className={classes.paragraph}>
+          <Typography variant="body1" component="p" paragraph>
             May Allah preserve both Shaykh Dr. V Abdur Rahim for authoring these amazing books and Shaykh Asif Meherali for his gift in teaching these books.<br />
           </Typography>
-          <Typography variant="body1" component="p" className={classes.paragraph}>
+          <Typography variant="body1" component="p" paragraph>
             Some useful links:<br />
             <a href="https://www.amazon.co.uk/Arabic-Course-English-Speaking-Students-complete/dp/B004NIIV9C/ref=sr_1_9?dchild=1&keywords=madinah+books&qid=1610816209&sr=8-9" target="_blank" rel="noreferrer">Amazon link to buy the books</a><br />
-            <a href="http://www.lqtoronto.com/videodlmac.html" target="_blank" rel="noreferrer">LQToronto Playlist (lqtoronto.com)</a><br />
-            <a href="https://www.youtube.com/c/LearnarabicInfo/playlists" target="_blank" rel="noreferrer">LQToronto Playlist (Youtube)</a>
+            LQToronto Playlist <a href="https://www.youtube.com/c/LearnarabicInfo/playlists" target="_blank" rel="noreferrer">YouTube</a> / <a href="http://www.lqtoronto.com/videodlmac.html" target="_blank" rel="noreferrer">lqtoronto.com</a><br />
+            <a href="http://www.lqtoronto.com/forums/" target="_blank" rel="noreferrer">LQToronto Forum</a>
           </Typography>
           <Button
             variant={'contained'}
@@ -210,7 +240,7 @@ function ProgressPage() {
       <Box margin={2}>
         دروس اللغة العربية
         <Typography variant="h2" component="h2" gutterBottom>
-          Madinah Book <span style={{ color: progress < 100 ? lightBlue[500] : amber[500] }}>{selectedBook}</span>
+          Madinah Book <Typography variant="inherit" color={progress < 100 ? 'primary' : 'secondary'}>{selectedBook}</Typography>
         </Typography>
       </Box>
       <Box marginBottom={4}>
@@ -244,6 +274,12 @@ function App() {
     setCarouselIndex(selectedIndex);
   };
 
+  // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+  useEffect(() => {
+    // selectTheme(prefersDarkMode ? darkTheme : lightTheme)
+  }, []);
+
   const darkTheme = createMuiTheme({
     palette: {
       type: 'dark',
@@ -252,12 +288,40 @@ function App() {
       },
       secondary: {
         main: amber[500]
+      },
+      background: {
+        default: '#282c34'
       }
     },
   });
 
+  const lightTheme = createMuiTheme({
+    palette: {
+      type: 'light',
+      primary: {
+        main: red[500],
+      },
+      secondary: {
+        main: purple[500]
+      },
+      background: {
+        default: 'whitesmoke'
+      }
+    },
+  });
+
+  const [theme, selectTheme] = useState(darkTheme);
+
+  const toggleTheme = () => {
+    let newTheme = theme.palette.type === 'dark' ? lightTheme : darkTheme;
+    selectTheme(newTheme);
+  }
+
+  const classes = useStyles();
+
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Carousel
         activeIndex={carouselIndex}
         onSelect={handleSelect}
@@ -270,14 +334,21 @@ function App() {
           <ProgressPage />
         </Carousel.Item>
       </Carousel>
-      <a
-        href="https://github.com/AhmedAGadir/arabic-progress-bar"
-        target="_blank">
-        <img
-          src="https://res.cloudinary.com/ahmedagadir/image/upload/v1530726623/product-landing-page/github-sign.svg"
-          alt="GitHub repository"
-          title="GitHub repository" />
-      </a>
+      <footer>
+        <Box className={classes.fixedBottomLeft} onClick={toggleTheme}>
+          {selectTheme === lightTheme ? <Brightness1Icon fontSize="large" /> : <Brightness2Icon fontSize="large" />}
+        </Box>
+        <Box className={classes.fixedBottomRight}>
+          <a
+            href="https://github.com/AhmedAGadir/arabic-progress-bar"
+            target="_blank">
+            <img
+              src="https://res.cloudinary.com/ahmedagadir/image/upload/v1530726623/product-landing-page/github-sign.svg"
+              alt="GitHub repository"
+              title="GitHub repository" />
+          </a>
+        </Box>
+      </footer>
     </ThemeProvider >
   );
 }
