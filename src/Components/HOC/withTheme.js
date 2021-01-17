@@ -30,66 +30,67 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const withTheme = Component => props => {
-    // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-
-    // useEffect(() => {
-    //   selectTheme(prefersDarkMode ? darkTheme : lightTheme)
-    // }, []);
-
-    const typography = {
-        h2: {
-            fontSize: '3.75rem',
-            '@media (max-width:600px)': {
-                fontSize: '3rem',
-            }
-        }
-    };
-    // breakpoints: {
-    //   [up('md')]: {
-    //     fontSize: '2.4rem'
-    //   }
-    // }
-
-    const themeConfig = {
-        dark: {
-            palette: {
-                type: 'dark',
-                primary: {
-                    main: lightBlue[500],
-                },
-                secondary: {
-                    main: amber[500]
-                },
-                background: {
-                    default: '#282c34'
-                },
-            },
-            typography
-        },
-        light: {
-            palette: {
-                type: 'light',
-                primary: {
-                    main: deepPurple['A400'],
-                },
-                secondary: {
-                    main: amber['A400']
-                },
-                background: {
-                },
-                text: {
-                    primary: deepPurple[900]
-                },
-            },
-            typography
+const typography = {
+    h2: {
+        fontSize: '3.75rem',
+        '@media (max-width:600px)': {
+            fontSize: '3rem',
         }
     }
+};
+// breakpoints: {
+//   [up('md')]: {
+//     fontSize: '2.4rem'
+//   }
+// }
+
+const themeConfig = {
+    dark: {
+        palette: {
+            type: 'dark',
+            primary: {
+                main: lightBlue[500],
+            },
+            secondary: {
+                main: amber[500]
+            },
+            background: {
+                default: '#282c34'
+            },
+        },
+        typography
+    },
+    light: {
+        palette: {
+            type: 'light',
+            primary: {
+                main: deepPurple['A400'],
+            },
+            secondary: {
+                main: amber['A400']
+            },
+            background: {
+            },
+            text: {
+                primary: deepPurple[900]
+            },
+        },
+        typography
+    }
+}
+
+const withTheme = Component => props => {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
 
     const darkTheme = createMuiTheme(themeConfig.dark);
     const lightTheme = createMuiTheme(themeConfig.light);
 
     const [selectedTheme, selectTheme] = useState(darkTheme);
+
+    useEffect(() => {
+        selectTheme(prefersDarkMode ? darkTheme : lightTheme)
+    }, []);
 
     const toggleTheme = () => {
         let newTheme = selectedTheme.palette.type === 'dark' ? lightTheme : darkTheme;

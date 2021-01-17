@@ -26,7 +26,7 @@ function LandingPage(props) {
           </Typography>
                 <Container maxWidth="sm">
                     <Typography component="p" paragraph>
-                        A simple web app to help students of the arabic language stay motivated🙏🏾 .
+                        A simple web app to help students of the arabic language stay motivated🙏🏾.
             </Typography>
                     <Typography component="p" paragraph>
                         May Allah preserve both Shaykh Dr. V Abdur Rahim for authoring these amazing books and Shaykh Asif Meherali for his gift in teaching these books.<br />
