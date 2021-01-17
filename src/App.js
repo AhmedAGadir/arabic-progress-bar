@@ -293,8 +293,21 @@ function App() {
       },
       background: {
         default: '#282c34'
+      },
+    },
+    typography: {
+      h2: {
+        fontSize: '3.75rem',
+        '@media (max-width:600px)': {
+          fontSize: '3rem',
+        }
       }
     },
+    // breakpoints: {
+    //   [up('md')]: {
+    //     fontSize: '2.4rem'
+    //   }
+    // }
   });
 
   const lightTheme = createMuiTheme({
@@ -312,8 +325,21 @@ function App() {
       text: {
         // primary: '#282c34'
         primary: deepPurple[900]
+      },
+    },
+    typography: {
+      h2: {
+        fontSize: '3.75rem',
+        '@media (max-width:600px)': {
+          fontSize: '3rem',
+        }
       }
     },
+    // breakpoints: {
+    //   [up('md')]: {
+    //     fontSize: '2.4rem'
+    //   }
+    // }
   });
 
   const [theme, selectTheme] = useState(lightTheme);
