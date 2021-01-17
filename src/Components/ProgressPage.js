@@ -78,7 +78,7 @@ function ProgressPage() {
     const classes = useStyles();
 
     return (
-        <div>
+        <>
             <Box>
                 {allBooks.map(bookNo => (
                     <Button
@@ -115,7 +115,7 @@ function ProgressPage() {
                     </Select>
                 </FormControl>
             </Box>
-        </div>
+        </>
     );
 }
 

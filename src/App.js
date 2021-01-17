@@ -8,6 +8,12 @@
 // domain name
 // google analytics 
 
+// create different services/higher order functions
+// that provide progress percentage e.g one for chapters, one for lq toronto videos, one for youtube
+// ^^ strategy pattern 
+
+// localstorage for selected theme state and selected book state 
+
 // modularise the code
 // pulse/confetti animations
 // alert when you finish
