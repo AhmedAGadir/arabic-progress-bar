@@ -29,7 +29,8 @@ import Container from '@material-ui/core/Container';
 import amber from '@material-ui/core/colors/amber';
 import lightBlue from '@material-ui/core/colors/lightBlue';
 import red from '@material-ui/core/colors/red';
-import purple from '@material-ui/core/colors/purple';
+import deepPurple from '@material-ui/core/colors/deepPurple';
+import blueGrey from '@material-ui/core/colors/blueGrey';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
@@ -70,11 +71,12 @@ const useStyles = makeStyles((theme) => ({
   fixedBottomLeft: {
     position: 'fixed',
     bottom: 0,
-    left: '50%',
-    marginBottom: 200,
-    transform: 'translateX(-50%)',
+    left: 0,
+    // left: '50%',
+    // marginBottom: 200,
+    // transform: 'translateX(-50%)',
     width: 40,
-    // margin: 20,
+    margin: 20,
     transition: 'all 0.2s ease',
     zIndex: 999,
     cursor: 'pointer'
@@ -248,12 +250,12 @@ function ProgressPage() {
       </Box>
       <Box>
         <FormControl variant="outlined" className={classes.formControl}>
-          <InputLabel>Completed Chapter</InputLabel>
+          <InputLabel>Chapter</InputLabel>
           <Select
             native
             value={completedChapters}
             onChange={handleCompletedChaptersChange}
-            label={'Completed Chapter'}>
+            label={'Chapter'}>
             {
               [<option value="" key=""></option>,
               ...Array.from({ length: totalChapters }, (_, i) => i + 1).map(num => (
@@ -274,10 +276,10 @@ function App() {
     setCarouselIndex(selectedIndex);
   };
 
-  // const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   useEffect(() => {
-    // selectTheme(prefersDarkMode ? darkTheme : lightTheme)
+    selectTheme(prefersDarkMode ? darkTheme : lightTheme)
   }, []);
 
   const darkTheme = createMuiTheme({
@@ -299,18 +301,22 @@ function App() {
     palette: {
       type: 'light',
       primary: {
-        main: red[500],
+        main: deepPurple['A400'],
       },
       secondary: {
-        main: purple[500]
+        main: amber['A400']
       },
       background: {
-        default: 'whitesmoke'
+        // default: 'ghostwhite'
+      },
+      text: {
+        // primary: '#282c34'
+        primary: deepPurple[900]
       }
     },
   });
 
-  const [theme, selectTheme] = useState(darkTheme);
+  const [theme, selectTheme] = useState(lightTheme);
 
   const toggleTheme = () => {
     let newTheme = theme.palette.type === 'dark' ? lightTheme : darkTheme;
@@ -336,7 +342,7 @@ function App() {
       </Carousel>
       <footer>
         <Box className={classes.fixedBottomLeft} onClick={toggleTheme}>
-          {selectTheme === lightTheme ? <Brightness1Icon fontSize="large" /> : <Brightness2Icon fontSize="large" />}
+          {theme.palette.type === 'dark' ? <Brightness1Icon fontSize="large" /> : <Brightness2Icon fontSize="large" />}
         </Box>
         <Box className={classes.fixedBottomRight}>
           <a
