@@ -30,13 +30,13 @@ html, body {
 }
 
 img[alt="GitHub repository"] {
-  position: fixed;
+  /* position: fixed;
   bottom: 0;
   right: 0;
   width: 40px;
   margin: 20px;
   transition: all 0.2s ease;
-  z-index: 999;
+  z-index: 999; */
   opacity: 0.5;
 }
 
