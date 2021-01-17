@@ -8,6 +8,8 @@
 // add a login system LOL 
 // if youve already filled out the form then just reload the page youre on 
 // deploy
+// whats next page 
+//
 
 import './App.css';
 
@@ -36,11 +38,9 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 180,
-    // color: 'white'
   },
   button: {
     margin: theme.spacing(1),
-    // minWidth: 120,
     width: 150,
     fontWeight: 'bold',
     display: 'inline'
@@ -50,11 +50,24 @@ const useStyles = makeStyles((theme) => ({
   },
   paragraph: {
     margin: theme.spacing(2)
+  },
+  circularProgress: {
+    transform: 'scale(1)',
+    // transition: '0.5s ease all',
+    animation: props => props.animate ? 'pulse 1s forwards' : null
   }
 }));
 
 function CircularProgressWithLabel(props) {
-  const size = 300;
+
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    setAnimate(true);
+    setTimeout(() => { setAnimate(false) }, 1200);
+  }, [props.value])
+
+  const classes = useStyles({ animate });
 
   return (
     <Box
@@ -62,7 +75,8 @@ function CircularProgressWithLabel(props) {
       display="inline-flex"
     >
       <CircularProgress
-        style={{ width: size, height: size }}
+        size={300}
+        thickness={2.4}
         variant="determinate"
         color={props.value < 100 ? "primary" : "secondary"}
         {...props} />
@@ -77,6 +91,7 @@ function CircularProgressWithLabel(props) {
         justifyContent="center"
       >
         <Typography
+          className={classes.circularProgress}
           variant="h5"
           component="div"
           // color="textPrimary"
