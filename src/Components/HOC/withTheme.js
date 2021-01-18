@@ -16,7 +16,6 @@ import blueGrey from '@material-ui/core/colors/blueGrey';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     fixedBottomLeft: {
@@ -87,7 +86,7 @@ const withTheme = Component => props => {
     const darkTheme = createMuiTheme(themeConfig.dark);
     const lightTheme = createMuiTheme(themeConfig.light);
 
-    const [selectedTheme, selectTheme] = useState(null);
+    const [selectedTheme, selectTheme] = useState(lightTheme);
 
     useEffect(() => {
         let savedThemePreference = localStorage.getItem('madinah-web-theme');
@@ -105,10 +104,6 @@ const withTheme = Component => props => {
     }
 
     const classes = useStyles();
-
-    if (!selectedTheme) {
-        return <Typography variant="h2">Loading...</Typography>
-    }
 
     return (
         <ThemeProvider theme={selectedTheme}>
