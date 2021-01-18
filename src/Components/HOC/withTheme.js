@@ -89,12 +89,18 @@ const withTheme = Component => props => {
     const [selectedTheme, selectTheme] = useState(darkTheme);
 
     useEffect(() => {
-        selectTheme(prefersDarkMode ? darkTheme : lightTheme)
+        let savedThemePreference = localStorage.getItem('madinah-web-theme');
+        if (savedThemePreference) {
+            selectTheme(savedThemePreference === 'dark' ? darkTheme : lightTheme)
+        } else {
+            selectTheme(prefersDarkMode ? darkTheme : lightTheme)
+        }
     }, []);
 
     const toggleTheme = () => {
         let newTheme = selectedTheme.palette.type === 'dark' ? lightTheme : darkTheme;
         selectTheme(newTheme);
+        localStorage.setItem('madinah-web-theme', newTheme.palette.type);
     }
 
     const classes = useStyles();
