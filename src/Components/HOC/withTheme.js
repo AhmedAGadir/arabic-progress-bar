@@ -86,7 +86,7 @@ const withTheme = Component => props => {
     const darkTheme = createMuiTheme(themeConfig.dark);
     const lightTheme = createMuiTheme(themeConfig.light);
 
-    const [selectedTheme, selectTheme] = useState(darkTheme);
+    const [selectedTheme, selectTheme] = useState(lightTheme);
 
     useEffect(() => {
         let savedThemePreference = localStorage.getItem('madinah-web-theme');

@@ -1,3 +1,5 @@
+//make percentage correspond to pages in the book ?
+
 // confetti
 // ringing sound when updating
 // animations (bitmoji?) when updating
