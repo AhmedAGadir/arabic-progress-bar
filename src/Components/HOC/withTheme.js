@@ -82,7 +82,6 @@ const themeConfig = {
 const withTheme = Component => props => {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-
     const darkTheme = createMuiTheme(themeConfig.dark);
     const lightTheme = createMuiTheme(themeConfig.light);
 

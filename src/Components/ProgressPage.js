@@ -32,6 +32,15 @@ function ProgressPage() {
     const allBooks = [1, 2, 3];
     const [selectedBook, setSelectedBook] = useState(allBooks[0]);
 
+    useEffect(() => {
+        let savedBook = localStorage.getItem('madinah-book');
+        if (savedBook) {
+            setSelectedBook(parseInt(savedBook))
+        } else {
+            setSelectedBook(allBooks[0]);
+        }
+    }, []);
+
     const [completedChapters, setCompletedChapters] = useState('');
     const [totalChapters, setTotalChapters] = useState(0);
 
@@ -46,6 +55,7 @@ function ProgressPage() {
             setCompletedChapters(0);
         }
         updateTotalChapters();
+        localStorage.setItem('madinah-book', selectedBook);
     }, [selectedBook]);
 
     useEffect(() => {
