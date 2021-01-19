@@ -19,13 +19,27 @@ const useStyles = makeStyles((theme) => ({
 
 
 function MyCarousel(props) {
-    const [carouselIndex, setCarouselIndex] = useState(0);
+    const [carouselIndex, setCarouselIndex] = useState(null);
 
     const handleSelect = (selectedIndex, e) => {
         setCarouselIndex(selectedIndex);
+        localStorage.setItem('madinah-carousel-page', selectedIndex);
     };
 
+    useEffect(() => {
+        let savedPage = localStorage.getItem('madinah-carousel-page');
+        if (savedPage) {
+            setCarouselIndex(parseInt(savedPage))
+        } else {
+            setCarouselIndex(0)
+        }
+    }, []);
+
     const classes = useStyles();
+
+    if (carouselIndex === null) {
+        return <></>
+    }
 
     return (
         <>
