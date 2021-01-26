@@ -80,19 +80,19 @@ const themeConfig = {
 }
 
 const withTheme = Component => props => {
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    const prefersLightMode = useMediaQuery('(prefers-color-scheme: light)');
 
     const darkTheme = createMuiTheme(themeConfig.dark);
     const lightTheme = createMuiTheme(themeConfig.light);
 
-    const [selectedTheme, selectTheme] = useState(lightTheme);
+    const [selectedTheme, selectTheme] = useState(darkTheme);
 
     useEffect(() => {
         let savedThemePreference = localStorage.getItem('madinah-web-theme');
         if (savedThemePreference) {
-            selectTheme(savedThemePreference === 'dark' ? darkTheme : lightTheme)
+            selectTheme(savedThemePreference === 'light' ? lightTheme : darkTheme)
         } else {
-            selectTheme(prefersDarkMode ? darkTheme : lightTheme)
+            selectTheme(prefersLightMode ? lightTheme : darkTheme)
         }
     }, []);
 

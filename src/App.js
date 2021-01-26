@@ -1,3 +1,5 @@
+// create a mixin for the restoring carosel-index, book, and chapter state on loading the app
+
 //make percentage correspond to pages in the book ?
 
 // confetti
